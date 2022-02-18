@@ -19,16 +19,15 @@ lower_white = np.array([0, 0, 11])
 upper_white = np.array([26, 82, 2])
 
 #Imagenes
-#Images
-#img = cv2.imread('D:\Documentos\MisProyectos\CarambolaProyect\Carambola_Proy\imagenes\muestra_01.jpg')
+frame = cv2.imread('D:\Documentos\MisProyectos\CarambolaProyect\Carambola_Proy\imagenes\muestra_05.jpeg')
 
 #Video
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
 
 
 while True:
 
-    ret,frame = cap.read()
+    #ret,frame = cap.read()
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) #Convert the image into HSV
     #image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) #Convert the image into HSV
     
@@ -44,7 +43,7 @@ while True:
     if len(contours1) !=0:
         #Yellow contours
         for i in contours1:
-            if cv2.contourArea(i) > 360:
+            if cv2.contourArea(i) < 638 and cv2.contourArea(i) > 360 :
                 x, y, w, h = cv2.boundingRect(i)
                 cv2.rectangle(frame,(x,y),(x+w, y+h),(0,255,255),3)
                 #cv2.rectangle(img,(x,y),(x+w, y+h),(0,0,255),3)
@@ -54,7 +53,7 @@ while True:
                 #cv2.circle(img,(center_x,center_y),3,(255,0,255),-1)
         #Red contours
         for i in contours2:
-            if cv2.contourArea(i) > 360:
+            if cv2.contourArea(i) > 500:
                 x, y, w, h = cv2.boundingRect(i)
                 cv2.rectangle(frame,(x,y),(x+w, y+h),(0,0,255),3)
                 #cv2.rectangle(img,(x,y),(x+w, y+h),(0,0,255),3)
@@ -73,12 +72,11 @@ while True:
                 cv2.circle(frame,(center_x,center_y),3,(255,0,255),-1)
                 #cv2.circle(img,(center_x,center_y),3,(255,0,255),-1)
 
-    cv2.imshow('Mask', mask3)
+    cv2.imshow('Mask', mask1)
     cv2.imshow('webcam', frame)
-    #cv2.imshow('webcam', img)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-cap.release()
+#cap.release()
 cv2.destroyAllWindows()
