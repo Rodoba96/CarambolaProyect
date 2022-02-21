@@ -5,6 +5,22 @@
 import cv2
 from cv2 import VideoCapture
 import numpy as np
+import math
+
+def calculateDistance(x1,y1,x2,y2):
+    distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    return distance
+
+def calculateAngles(a,b,c):
+    #Trigonometric properties
+    ang_A = math.acos(((b**2)+(c**2)-(a**2))/(2*b*c))
+    ang_B = math.acos(((a**2)+(c**2)-(b**2))/(2*a*c))
+    ang_C = math.acos(((a**2)+(b**2)-(c**2))/(2*a*b))
+    #Rad to Deg
+    ang_A = ang_A * 180/math.pi
+    ang_B = ang_B * 180/math.pi
+    ang_C = ang_C * 180/math.pi
+    return ang_A, ang_B, ang_C
 
 #Ranges for yellow H   S   V(default)
 lower_yellow = np.array([20, 130, 20])
@@ -77,6 +93,14 @@ while True:
         cv2.line(img=frame, pt1=(centerR_x,centerR_y),pt2=(centerW_x,centerW_y),color=(255,0,255),thickness=2) # Red    - White
         cv2.line(img=frame, pt1=(centerW_x,centerW_y),pt2=(centerY_x,centerY_y),color=(255,0,255),thickness=2) # White  - Yellow
 
+        #Obtain distance 
+        dist_YR = calculateDistance(centerY_x,centerY_y,centerR_x,centerR_y)
+        dist_RW = calculateDistance(centerR_x,centerR_y,centerW_x,centerW_y)
+        dist_WY = calculateDistance(centerW_x,centerW_y,centerY_x,centerY_y) 
+
+        #Obtain Angles
+        ang_YWR, ang_RYW, ang_WRY = calculateAngles(dist_YR,dist_RW,dist_WY)
+        
 
     #cv2.imshow('Mask', mask3)
     cv2.imshow('webcam', frame)
@@ -86,3 +110,14 @@ while True:
 
 #cap.release()
 cv2.destroyAllWindows()
+
+
+print(dist_YR)
+print(dist_RW)
+print(dist_WY)
+print()
+print(ang_YWR)
+print(ang_RYW)
+print(ang_WRY)
+
+print(ang_YWR+ang_RYW+ang_WRY)
