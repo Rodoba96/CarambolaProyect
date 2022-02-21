@@ -8,10 +8,10 @@ def nothing(x):
     pass
 
 # Load in image
-#image = cv2.imread('1.jpg')
+image = cv2.imread('D:\Documentos\MisProyectos\CarambolaProyect\Carambola_Proy\imagenes\muestra_06.jpeg')
 
 #Video
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
 
 # Create a window
 cv2.namedWindow('image')
@@ -33,13 +33,13 @@ cv2.setTrackbarPos('VMax', 'image', 255)
 hMin = sMin = vMin = hMax = sMax = vMax = 0
 phMin = psMin = pvMin = phMax = psMax = pvMax = 0
 
-#output = image
-output = cap
+output = image
+#output = cap
 wait_time = 33
 
 while(1):
 
-    ret,image = cap.read()
+    #ret,image = cap.read()
 
     # get current positions of all trackbars
     hMin = cv2.getTrackbarPos('HMin','image')
@@ -76,5 +76,5 @@ while(1):
     if cv2.waitKey(wait_time) & 0xFF == ord('q'):
         break
 
-cap.release()
+#cap.release()
 cv2.destroyAllWindows()

@@ -7,7 +7,7 @@ from cv2 import VideoCapture
 import numpy as np
 
 #Ranges for yellow H   S   V(default)
-lower_yellow = np.array([20, 80, 20])
+lower_yellow = np.array([20, 130, 20])
 upper_yellow = np.array([30, 255, 255])
 
 #RED
@@ -15,8 +15,8 @@ lower_red = np.array([170, 150, 20])
 upper_red = np.array([180, 255, 255])
 
 #White 
-lower_white = np.array([0, 0, 11])
-upper_white = np.array([26, 82, 2])
+lower_white = np.array([0, 0, 100])
+upper_white = np.array([80, 150, 255])
 
 #Imagenes
 frame = cv2.imread('D:\Documentos\MisProyectos\CarambolaProyect\Carambola_Proy\imagenes\muestra_05.jpeg')
@@ -43,13 +43,13 @@ while True:
     if len(contours1) !=0:
         #Yellow contours
         for i in contours1:
-            if cv2.contourArea(i) < 638 and cv2.contourArea(i) > 360 :
+            if cv2.contourArea(i) < 638 and cv2.contourArea(i) > 360:
                 x, y, w, h = cv2.boundingRect(i)
                 cv2.rectangle(frame,(x,y),(x+w, y+h),(0,255,255),3)
                 #cv2.rectangle(img,(x,y),(x+w, y+h),(0,0,255),3)
-                center_x = x+(w//2)
-                center_y = y+(h//2)
-                cv2.circle(frame,(center_x,center_y),3,(255,0,255),-1)
+                centerY_x = x+(w//2)
+                centerY_y = y+(h//2)
+                cv2.circle(frame,(centerY_x,centerY_y),3,(255,0,255),-1)
                 #cv2.circle(img,(center_x,center_y),3,(255,0,255),-1)
         #Red contours
         for i in contours2:
@@ -57,22 +57,28 @@ while True:
                 x, y, w, h = cv2.boundingRect(i)
                 cv2.rectangle(frame,(x,y),(x+w, y+h),(0,0,255),3)
                 #cv2.rectangle(img,(x,y),(x+w, y+h),(0,0,255),3)
-                center_x = x+(w//2)
-                center_y = y+(h//2)
-                cv2.circle(frame,(center_x,center_y),3,(255,0,255),-1)
+                centerR_x = x+(w//2)
+                centerR_y = y+(h//2)
+                cv2.circle(frame,(centerR_x,centerR_y),3,(255,0,255),-1)
                 #cv2.circle(img,(center_x,center_y),3,(255,0,255),-1)
         #White contours
         for i in contours3:
-            if cv2.contourArea(i) > 360:
+            if cv2.contourArea(i) < 925 and cv2.contourArea(i) > 380: 
                 x, y, w, h = cv2.boundingRect(i)
                 cv2.rectangle(frame,(x,y),(x+w, y+h),(255,255,255),3)
                 #cv2.rectangle(img,(x,y),(x+w, y+h),(0,0,255),3)
-                center_x = x+(w//2)
-                center_y = y+(h//2)
-                cv2.circle(frame,(center_x,center_y),3,(255,0,255),-1)
+                centerW_x = x+(w//2)
+                centerW_y = y+(h//2)
+                cv2.circle(frame,(centerW_x,centerW_y),3,(255,0,255),-1)
                 #cv2.circle(img,(center_x,center_y),3,(255,0,255),-1)
+        
+        #Draw a trianlge
+        cv2.line(img=frame, pt1=(centerY_x,centerY_y),pt2=(centerR_x,centerR_y),color=(255,0,255),thickness=2) # Yellow - Red
+        cv2.line(img=frame, pt1=(centerR_x,centerR_y),pt2=(centerW_x,centerW_y),color=(255,0,255),thickness=2) # Red    - White
+        cv2.line(img=frame, pt1=(centerW_x,centerW_y),pt2=(centerY_x,centerY_y),color=(255,0,255),thickness=2) # White  - Yellow
 
-    cv2.imshow('Mask', mask1)
+
+    #cv2.imshow('Mask', mask3)
     cv2.imshow('webcam', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
